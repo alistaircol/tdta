@@ -35,3 +35,24 @@ The input CSV file has two columns:
  * information indicating if the student attended a class:
     * `Y` means that the student attended a class, so you should increase the `Student->attendance` attribute.
     * `N` means that the student did not attend a class, so the `Student->attendance` attribute stays the same.
+
+---
+
+## Running the Application
+
+Run locally, or `make` commands described below. 
+
+```text
+This is a PHP 7.4 application. If you have it (and composer) installed locally, then simply run:
+composer install
+composer test
+
+This Makefile has some options to run the application in docker if you do not have 7.4 locally.
+The docker image is webdevops/php-dev:7.4
+
+Usage: make [subcommand]
+subcommands:
+  ci   Mounts current pwd and run composer install in a docker image
+  test Mounts current pwd and run composer test in a docker image
+  dev  Mounts current pwd and run composer test (with xDebug 3 enabled) in a docker image
+```
