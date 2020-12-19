@@ -1,0 +1,19 @@
+{
+    "name": "twindig/php-student-details",
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "": "app/"
+        },
+        "classmap": [
+            "app/"
+        ]
+    },
+    "require": {
+        "php": ">=7.2",
+        "phpunit/phpunit": "^8"
+    },
+    "scripts": {
+        "test": "phpunit; echo"
+    }
+}
