@@ -73,7 +73,7 @@ class StudentDetailsImporter
             // makes constructing student parameters more sane
             $row = self::cleanInput(
                 array_combine(
-                    $this->headers,
+                    $this->getHeaders(),
                     $rows->current()
                 )
             );
@@ -113,6 +113,70 @@ class StudentDetailsImporter
         /**
          * Fetch data from given csv file and update students attendance
          */
+        $studentsAttendances = $this->getEmptyStudentsAttendancesMatrix();
+
+        $rows = $this->getCsv($fileName);
+
+        // build studentId -> attendances matrix
+        foreach ($rows as $row) {
+            $studentId = $row[0];
+            $attendance = $row[1];
+
+            if (!array_key_exists($studentId, $studentsAttendances)) {
+                // unrecognised student id
+                continue;
+            }
+
+            if (stripos($attendance, 'y') !== 0) {
+                // no attendance, nothing to do
+                continue;
+            }
+
+            $studentsAttendances[$studentId]++;
+        }
+
+        // update students attendances
+        foreach ($studentsAttendances as $studentId => $attendance) {
+            $student = $this->getStudent($studentId);
+
+            if ($student === null) {
+                continue;
+            }
+
+            $student->setAttendance($attendance);
+        }
+    }
+
+    /**
+     * Return a matrix of studentIds with attendance set to 0.
+     *
+     * @return array
+     */
+    private function getEmptyStudentsAttendancesMatrix(): array
+    {
+        $studentIds = array_map(
+            function ($student) {
+                return $student->getId();
+            },
+            $this->getStudentList()
+        );
+
+        return array_fill_keys($studentIds, 0);
+    }
+
+    /**
+     * @param int $studentId
+     * @return Student|null
+     */
+    private function getStudent(int $studentId): ?Student
+    {
+        foreach ($this->getStudentList() as $student) {
+            if ($student->getId() === $studentId) {
+                return $student;
+            }
+        }
+
+        return null;
     }
 
     /**
