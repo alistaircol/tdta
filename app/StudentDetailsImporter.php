@@ -7,12 +7,12 @@ class StudentDetailsImporter
     /**
      * @var string[]
      */
-    private $headers = [];
+    private array $headers = [];
 
     /**
      * @var Student[]
      */
-    private $studentList = [];
+    private array $studentList = [];
 
     /**
      * @param string[] $row
@@ -99,7 +99,7 @@ class StudentDetailsImporter
      *
      * @return \Generator
      */
-    private function getCsv($fileName): ?\Generator
+    private function getCsv(string $fileName): ?\Generator
     {
         $handle = fopen($fileName, 'rb');
         while (!feof($handle)) {
