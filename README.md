@@ -56,3 +56,17 @@ subcommands:
   test Mounts current pwd and run composer test in a docker image
   dev  Mounts current pwd and run composer test (with xDebug 3 enabled) in a docker image
 ```
+
+```text
+$ make dev args=--testdox
+
+Student Details Importer (Base\StudentDetailsImporter)
+ ✔ Record count
+ ✔ Headers count
+ ✔ Student age
+ ✔ Avg score sum
+ ✔ Super student
+ ✔ Attendance
+
+Time: 167 ms, Memory: 4.00 M
+```
