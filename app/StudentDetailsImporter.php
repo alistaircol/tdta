@@ -37,11 +37,18 @@ class StudentDetailsImporter
         /**
          * Convert the input row into a Student class
          */
+        $subjects = self::cleanInput(
+            explode(
+                ',',
+                strtolower($row['subjects'])
+            )
+        );
+
         return new Student(
             $row['name'],
             (int) $row['id'],
             (int) $row['age'],
-            explode(',', strtolower($row['subjects'])),
+            $subjects,
             $row['grade'],
             (float) $row['average_score']
         );
@@ -122,13 +129,10 @@ class StudentDetailsImporter
             $studentId = $row[0];
             $attendance = $row[1];
 
-            if (!array_key_exists($studentId, $studentsAttendances)) {
-                // unrecognised student id
-                continue;
-            }
-
-            if (stripos($attendance, 'y') !== 0) {
-                // no attendance, nothing to do
+            if (!array_key_exists($studentId, $studentsAttendances)
+                || stripos($attendance, 'y') !== 0
+            ) {
+                // unrecognised student id, or no attendance - nothing to do
                 continue;
             }
 
