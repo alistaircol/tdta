@@ -24,7 +24,7 @@ class StudentDetailsImporter
         /**
          * Clean and sanitize the input so that it does not contain leading and trailing spaces
          */
-        return $row;
+        return array_map('trim', $row);
     }
 
     /**
@@ -37,7 +37,14 @@ class StudentDetailsImporter
         /**
          * Convert the input row into a Student class
          */
-        return new Student($row[0], $row[1], $row[2], $row[3], $row[4], $row[5]);
+        return new Student(
+            $row['name'],
+            (int) $row['id'],
+            (int) $row['age'],
+            explode(',', $row['subjects']),
+            $row['grade'],
+            (float) $row['average_score']
+        );
     }
 
     /**
@@ -52,6 +59,31 @@ class StudentDetailsImporter
          * set here $this->headers (first row)
          * set here $this->student_list consider using clean_input and map_csv_to_class
          */
+
+        $rows = $this->getCsv($fileName);
+
+        // Take first row and clean input - these will be the headers
+        $this->headers = self::cleanInput($rows->current());
+
+        // Move Generator ahead
+        $rows->next();
+
+        while ($rows->valid()) {
+            // Set row to keys are $this->header's and clean the values
+            // makes constructing student parameters more sane
+            $row = self::cleanInput(
+                array_combine(
+                    $this->headers,
+                    $rows->current()
+                )
+            );
+
+            $student = self::mapCsvToClass($row);
+            $this->studentList[] = $student;
+
+            $rows->next();
+        }
+
         return $this->studentList;
     }
 
