@@ -71,17 +71,21 @@ class Student
      */
     public function calculateScore(): float
     {
-        $points = $this->averageScore;
-        if (in_array('maths', $this->subjects, true) && in_array('computer science', $this->subjects, true)) {
+        $points = $this->getAverageScore();
+
+        if (in_array('computer science', $this->getSubjects(), true)) {
+            $points += 5;
+        }
+        if (in_array('maths', $this->getSubjects(), true)) {
             $points += 10;
         }
-        if (stripos($this->name, 'y') === 0) {
+        if (strpos($this->getName(), 'y') === 0) {
             $points += 15;
         }
-        if ($this->id % 2 === 0) {
+        if ($this->getId() % 2 === 0) {
             $points += 20;
         }
-        if ($this->grade) {
+        if (strtoupper($this->getGrade()) == 'A+') {
             $points += 25;
         }
 

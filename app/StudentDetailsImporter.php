@@ -41,7 +41,7 @@ class StudentDetailsImporter
             $row['name'],
             (int) $row['id'],
             (int) $row['age'],
-            explode(',', $row['subjects']),
+            explode(',', strtolower($row['subjects'])),
             $row['grade'],
             (float) $row['average_score']
         );
@@ -92,12 +92,17 @@ class StudentDetailsImporter
      */
     public function getSuperStudent(): ?Student
     {
-
-        $superStudent = null;
         /**
          * Get super student
          */
-        return $superStudent;
+        $superStudents = new \SplPriorityQueue();
+
+        foreach ($this->studentList as $student) {
+            $weight = $student->calculateScore();
+            $superStudents->insert($student, $weight);
+        }
+
+        return $superStudents->top() ?? null;
     }
 
     /**
