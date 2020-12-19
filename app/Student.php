@@ -7,37 +7,37 @@ class Student
     /**
      * @var string
      */
-    private $name;
+    private string $name;
 
     /**
      * @var int
      */
-    private $id;
+    private int $id;
 
     /**
      * @var int
      */
-    private $age;
+    private int $age;
 
     /**
      * @var string[]
      */
-    private $subjects;
+    private array $subjects;
 
     /**
      * @var string
      */
-    private $grade;
+    private string $grade;
 
     /**
      * @var float
      */
-    private $averageScore;
+    private float $averageScore;
 
     /**
      * @var int
      */
-    private $attendance;
+    private int $attendance;
 
     /**
      * @param string   $name
